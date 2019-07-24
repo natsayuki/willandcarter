@@ -126,24 +126,11 @@
       if (iStr($text,array(''))){
         // Good Job
 
-        $c = curl_init('http://stackoverflow.com/questions/ask');
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt(... other options you want...)
-
-        $html = curl_exec($c);
-
-        if (curl_error($c))
-            die(curl_error($c));
-
-        // Get the status code
-        $status = curl_getinfo($c, CURLINFO_HTTP_CODE);
-
-        curl_close($c);
-        // $html = file_get_contents('https://socialblade.com/youtube/search/will%20and%20carters%20funny%20skits');
-        $str = "<span class=\"deemphasize style-scope yt-formatted-string\">";
-        $pos = strpos($html, $str);
-        $count = substr($html, $pos + strlen($str), 10);
-        $count = explode($count, " ")[0];
+        $channel_id = "UC3a8cjhUE1q9Mr1U_EuFnNg";
+        $api_key = "AIzaSyBo3EoEvej1v2q9zHCOAoqJOE3smNoIxqQ";
+        $api_response = file_get_contents('https://www.googleapis.com/youtube/v3/channels?part=statistics&id='.$channel_id.'&fields=items/statistics/subscriberCount&key='.$api_key);
+        $count = json_decode($api_response, true);
+        $count = $count['items'][0]['statistics']['subscriberCount'];
         $strResponse = "Will and Carter's Funny Skits currently has ". $count . " subscribers!";
       }
 
