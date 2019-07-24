@@ -125,8 +125,22 @@
 
       if (iStr($text,array(''))){
         // Good Job
-        $html = file_get_contents('https://socialblade.com/youtube/search/will%20and%20carters%20funny%20skits');
-        $str = "<span style=\"font-size: 0.9em; background: #f6f6f6; padding: 2px 5px; border: 1px solid #e2e2e2; color:#666;\">";
+
+        $c = curl_init('http://stackoverflow.com/questions/ask');
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt(... other options you want...)
+
+        $html = curl_exec($c);
+
+        if (curl_error($c))
+            die(curl_error($c));
+
+        // Get the status code
+        $status = curl_getinfo($c, CURLINFO_HTTP_CODE);
+
+        curl_close($c);
+        // $html = file_get_contents('https://socialblade.com/youtube/search/will%20and%20carters%20funny%20skits');
+        $str = "<span class=\"deemphasize style-scope yt-formatted-string\">";
         $pos = strpos($html, $str);
         $count = substr($html, $pos + strlen($str), 10);
         $count = explode($count, " ")[0];
